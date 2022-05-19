@@ -9,6 +9,8 @@ parameters:
   ServiceDirectory: ''
 
 steps:
+
+- template: /eng/common/pipelines/templates/steps/check-duplicate-file-name.yml
 - pwsh: |
     if ("$(Build.Reason)" -eq 'PullRequest') {
       $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"

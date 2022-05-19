@@ -1,0 +1,25 @@
+parameters:
+  ServiceDirectory: ''
+steps:
+- pwsh: |
+    $scannedDirectory = @{}
+    if ("$(Build.Reason)" -eq 'PullRequest') {
+      $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
+      $changedFiles | ForEach-Object { $scannedDirectory[(Split-Path -Path $_)] = $true}
+    }
+    else if (${{ parameters.ServiceDirectory }}){
+      $scannedDirectory[${{parameters.ServiceDirectory}}] = $true
+    }
+    for ($directory in $scannedDirectory) {
+      $files = Get-ChildItem -Path $directory -File
+      $fileNameSet = @{}
+      for ($file in $files) {
+        if ($file.FullName.ToLower() -in $fileNameSet) {
+          Write-Error "There are duplicate files only differ in cases. Please check your file name: $($file.FullName). "
+          exit 1
+        }
+        $fileNameSet[$file.FullName] = $true
+      }
+    }
+  displayName: Detect case-insensitive file collisions
+  workingDirectory: $Build.SourceDirectory
