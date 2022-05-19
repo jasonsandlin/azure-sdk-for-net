@@ -7,7 +7,7 @@ steps:
       $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
       $changedFiles | ForEach-Object { $scannedDirectory[(Split-Path -Path $_)] = $true}
     }
-    else if (${{ parameters.ServiceDirectory }}){
+    elseif (${{ parameters.ServiceDirectory }}){
       $scannedDirectory[${{parameters.ServiceDirectory}}] = $true
     }
     for ($directory in $scannedDirectory) {
