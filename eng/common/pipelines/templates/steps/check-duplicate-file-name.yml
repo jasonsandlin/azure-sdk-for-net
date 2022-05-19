@@ -7,8 +7,8 @@ steps:
       $changedFiles = & "eng/common/scripts/get-changedfiles.ps1"
       $changedFiles | ForEach-Object { $scannedDirectory[(Split-Path -Path $_)] = $true}
     }
-    elseif ("${{ parameters.ServiceDirectory }}"){
-      $scannedDirectory[${{parameters.ServiceDirectory}}] = $true
+    elseif ("" - ne ${{ parameters.ServiceDirectory }}"){
+      $scannedDirectory["${{parameters.ServiceDirectory}}"] = $true
     }
     for ($directory in $scannedDirectory) {
       $files = Get-ChildItem -Path $directory -File
