@@ -13,7 +13,6 @@ param(
   # Date format: e.g. Tuesday, April 12, 2022 1:36:02 PM. Allow to use other date format.
   [AllowNull()]
   [DateTime]$LastCommitOlderThan,
-  [switch]$skipCentralPR,
   [Parameter(Mandatory = $true)]
   $AuthToken
 )
@@ -94,7 +93,7 @@ foreach ($res in $responses)
     continue
   }
   $hasCentralPROpened = $false
-  if (!$skipCentralPR) {
+  if ($CentralRepoId) {
     $hasCentralPROpened = RetrievePRAndClose -pullRequestNumber $Matches["PrNumber"] 
   }
   if ($LastCommitOlderThan) {
