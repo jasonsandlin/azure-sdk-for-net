@@ -57,7 +57,7 @@ function RetrievePRAndClose {
   foreach ($openPullRequest in $openPullRequests) {
     try 
     {
-      if (!$hasCentralPROpened -and $PSCmdlet.ShouldProcess("[ $($openPullRequest.url)] with branch [ $branchName ] in [ $RepoId ]", "Closing the pull request")) {
+      if ($PSCmdlet.ShouldProcess("[ $($openPullRequest.url)] with branch [ $branchName ] in [ $RepoId ]", "Closing the pull request")) {
         Close-GithubPullRequest -apiurl $openPullRequest.url -AuthToken $AuthToken | Out-Null
         LogDebug "Open pull Request [ $($openPullRequest.url)] associate with branch [ $branchName ] in repo [ $RepoId ] has been closed."
       }
