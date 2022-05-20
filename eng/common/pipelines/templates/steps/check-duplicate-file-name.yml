@@ -10,7 +10,7 @@ steps:
     elseif ("" -ne "${{ parameters.ServiceDirectory }}"){
       $scannedDirectory["${{parameters.ServiceDirectory}}"] = $true
     }
-    for ($directory in $scannedDirectory) {
+    for ($directory -in $scannedDirectory) {
       $files = Get-ChildItem -Path $directory -File
       $fileNameSet = @{}
       for ($file in $files) {
